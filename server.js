@@ -45,4 +45,17 @@ app.get('/weather/forecast', async (req, res) => {
       res.status(400).json({ error: 'Failed' });
     }
   });
+
+// Endpoint to get historical weather data
+app.get('/weather/history', async (req, res) => {
+    try {
+      const { location, date } = req.query;
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${location.lat}&lon=${location.lon}&dt=${date}&appid=${API_KEY}`);
+      const historicalWeather = response.data;
+      res.json(historicalWeather);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch' });
+    }
+  });
   
